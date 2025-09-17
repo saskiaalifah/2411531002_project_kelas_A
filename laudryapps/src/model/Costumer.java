@@ -14,7 +14,7 @@ public class Costumer {
         this.id = id;
     }
 
-    public String getNama() {
+    public String getName() {
         return nama;
     }
     public void setNama(String nama) {
