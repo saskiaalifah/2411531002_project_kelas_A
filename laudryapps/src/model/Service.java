@@ -24,7 +24,7 @@ public class Service {
     public double getHarga() {
         return harga;
     }
-    public void setHarga(double harga) {
+    public void setHarga(double string) {
         this.harga = harga;
     }
 
@@ -34,4 +34,5 @@ public class Service {
     public void setStatus(String status) {
         this.status = status;
     }
-}
+	
+	}
