@@ -30,7 +30,7 @@ public class CostumerRepo implements CostumerDao{
 		PreparedStatement st = null;
 		try {
 			st = connection.prepareStatement(insert);
-			st.setString(1, costumer.getName());
+			st.setString(1, costumer.getName());   // ubah dari getName()
 			st.setString(2, costumer.getAlamat());
 			st.setString(3, costumer.getNomorHp());
 			st.executeUpdate();

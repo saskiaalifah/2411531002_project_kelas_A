@@ -24,7 +24,7 @@ public class Service {
     public double getHarga() {
         return harga;
     }
-    public void setHarga(double string) {
+    public void setHarga(double harga) {
         this.harga = harga;
     }
 
