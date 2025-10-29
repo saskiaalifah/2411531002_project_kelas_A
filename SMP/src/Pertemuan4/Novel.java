@@ -12,3 +12,4 @@ public class Novel extends Book {
         return this.genre;
     }
 }
+

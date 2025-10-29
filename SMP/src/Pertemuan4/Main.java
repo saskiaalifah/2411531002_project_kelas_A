@@ -1,6 +1,4 @@
 package Pertemuan4;
-
-
 	public class Main {
 	    public static void main(String[] args) {
 	        // Membuat objek buku dari berbagai jenis
@@ -40,3 +38,5 @@ package Pertemuan4;
 	        System.out.println(novel.getTitle() + " tersedia: " + novel.isAvailable());
 	}
 }
+
+	
