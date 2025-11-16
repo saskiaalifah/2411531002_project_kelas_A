@@ -26,16 +26,13 @@ public class CostumerFrame extends JFrame {
     private JTextField txtNama;
     private JTextField txtAlamat;
     private JTextField txtNomorHP;
+    private JTextField txtEmail;
     private JTable tableCostumer;
 
-    // repo
     CostumerRepo cst = new CostumerRepo();
     List<Costumer> ls;
     public String id;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -50,10 +47,8 @@ public class CostumerFrame extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public CostumerFrame() {
+ 
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 800, 600);
@@ -76,7 +71,6 @@ public class CostumerFrame extends JFrame {
         txtNama = new JTextField();
         txtNama.setBounds(165, 31, 505, 19);
         panel.add(txtNama);
-        txtNama.setColumns(10);
 
         JLabel lblAlamat = new JLabel("Alamat");
         lblAlamat.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -84,7 +78,6 @@ public class CostumerFrame extends JFrame {
         panel.add(lblAlamat);
 
         txtAlamat = new JTextField();
-        txtAlamat.setColumns(10);
         txtAlamat.setBounds(165, 80, 505, 19);
         panel.add(txtAlamat);
 
@@ -94,38 +87,52 @@ public class CostumerFrame extends JFrame {
         panel.add(lblNohp);
 
         txtNomorHP = new JTextField();
-        txtNomorHP.setColumns(10);
         txtNomorHP.setBounds(165, 128, 505, 19);
         panel.add(txtNomorHP);
+
+        JLabel lblEmail = new JLabel("Email");
+        lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblEmail.setBounds(102, 167, 51, 25);
+        panel.add(lblEmail);
+
+        txtEmail = new JTextField();
+        txtEmail.setBounds(165, 172, 505, 19);
+        panel.add(txtEmail);
 
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // pakai Builder sesuai aturan dosen
+
                 Costumer costumer = new CostumerBuilder()
                         .setNama(txtNama.getText())
+                        .setEmail(txtEmail.getText())
                         .setAlamat(txtAlamat.getText())
                         .setHp(txtNomorHP.getText())
                         .build();
+
                 cst.save(costumer);
                 reset();
                 loadTable();
             }
         });
         btnSave.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        btnSave.setBounds(165, 193, 85, 40);
+        btnSave.setBounds(165, 210, 85, 40);
         panel.add(btnSave);
 
         JButton btnUpdate = new JButton("Update");
         btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 if (id != null) {
+
                     Costumer costumer = new CostumerBuilder()
-                            .setId(id)
+                            .setId(Integer.parseInt(id))
                             .setNama(txtNama.getText())
+                            .setEmail(txtEmail.getText())
                             .setAlamat(txtAlamat.getText())
                             .setHp(txtNomorHP.getText())
                             .build();
+
                     cst.update(costumer);
                     reset();
                     loadTable();
@@ -135,14 +142,15 @@ public class CostumerFrame extends JFrame {
             }
         });
         btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        btnUpdate.setBounds(271, 193, 85, 40);
+        btnUpdate.setBounds(271, 210, 85, 40);
         panel.add(btnUpdate);
 
         JButton btnDelete = new JButton("Delete");
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 if (id != null) {
-                    cst.delete(id);
+                    cst.delete(Integer.parseInt(id));
                     reset();
                     loadTable();
                 } else {
@@ -151,21 +159,17 @@ public class CostumerFrame extends JFrame {
             }
         });
         btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        btnDelete.setBounds(383, 193, 85, 40);
+        btnDelete.setBounds(383, 210, 85, 40);
         panel.add(btnDelete);
 
         JButton btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // kembali ke main atau cukup reset, sesuai kebutuhan
-                // contoh kembali ke MainFrame (jika ada)
-                // MainFrame main = new MainFrame();
-                // main.setVisible(true);
                 dispose();
             }
         });
         btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        btnCancel.setBounds(506, 193, 85, 40);
+        btnCancel.setBounds(506, 210, 85, 40);
         panel.add(btnCancel);
 
         JScrollPane scrollPane = new JScrollPane();
@@ -176,11 +180,13 @@ public class CostumerFrame extends JFrame {
         tableCostumer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 if (tableCostumer.getSelectedRow() >= 0) {
                     id = tableCostumer.getValueAt(tableCostumer.getSelectedRow(), 0).toString();
                     txtNama.setText(tableCostumer.getValueAt(tableCostumer.getSelectedRow(), 1).toString());
                     txtAlamat.setText(tableCostumer.getValueAt(tableCostumer.getSelectedRow(), 2).toString());
                     txtNomorHP.setText(tableCostumer.getValueAt(tableCostumer.getSelectedRow(), 3).toString());
+                    txtEmail.setText(tableCostumer.getValueAt(tableCostumer.getSelectedRow(), 4).toString());
                 }
             }
         });
@@ -188,18 +194,18 @@ public class CostumerFrame extends JFrame {
     }
 
     public void loadTable() {
-        ls = cst.show();
-        if (ls != null) {
-            TableCostumer tc = new TableCostumer(ls);
-            tableCostumer.setModel(tc);
-            tableCostumer.getTableHeader().setVisible(true);
-        }
+        ls = cst.show();                // Ambil data dari database
+        TableCostumer tc = new TableCostumer(ls);  
+        tableCostumer.setModel(tc);     // Tampilkan ke tabel
+        tableCostumer.getTableHeader().setVisible(true);
     }
+
 
     public void reset() {
         txtNama.setText("");
         txtAlamat.setText("");
         txtNomorHP.setText("");
+        txtEmail.setText("");
         id = null;
     }
 }

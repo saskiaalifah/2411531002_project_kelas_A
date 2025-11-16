@@ -23,13 +23,13 @@ public class LoginFrame extends JFrame {
         // Judul aplikasi
         JLabel lblTitle = new JLabel("Laundry Apps", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblTitle.setForeground(new Color(219, 112, 147)); // pink elegan
+        lblTitle.setForeground(new Color(219, 112, 147));
         lblTitle.setBounds(100, 20, 200, 30);
         add(lblTitle);
 
         JLabel lblSubtitle = new JLabel("Males aja nyuci, biar kami cuciin", SwingConstants.CENTER);
         lblSubtitle.setFont(new Font("Segoe UI", Font.ITALIC, 12));
-        lblSubtitle.setForeground(new Color(105, 105, 105)); // abu-abu
+        lblSubtitle.setForeground(new Color(105, 105, 105));
         lblSubtitle.setBounds(70, 50, 260, 20);
         add(lblSubtitle);
 
@@ -57,23 +57,57 @@ public class LoginFrame extends JFrame {
         btnLogin = new JButton("Login");
         btnLogin.setName("btnLogin");
         btnLogin.setBounds(150, 190, 100, 30);
-        btnLogin.setBackground(new Color(135, 206, 250)); // biru muda
+        btnLogin.setBackground(new Color(135, 206, 250));
         btnLogin.setForeground(Color.WHITE);
         btnLogin.setFocusPainted(false);
         btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 14));
         add(btnLogin);
 
-        // Event sesuai modul
+        // ============================
+        //       EXCEPTION HANDLING
+        // ============================
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = txtUsername.getText();
-                String password = new String(txtPassword.getPassword());
 
-                if (User.login(username, password)) {
-                    new MainFrame().setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Login Gagal!");
+                try {
+                    String username = txtUsername.getText().trim();
+                    String password = new String(txtPassword.getPassword()).trim();
+
+                    // Cek input kosong
+                    if (username.isEmpty() || password.isEmpty()) {
+                        throw new IllegalArgumentException("Username dan password tidak boleh kosong!");
+                    }
+
+                    // Proses login
+                    boolean result = User.login(username, password);
+
+                    if (result) {
+                        new MainFrame().setVisible(true);
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "Username atau password salah!",
+                            "Login Gagal",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        ex.getMessage(),
+                        "Input Error",
+                        JOptionPane.WARNING_MESSAGE
+                    );
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Terjadi kesalahan pada sistem: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
         });

@@ -55,7 +55,7 @@ public class UserRepo implements UserDao {
 			ResultSet rs = st.executeQuery(select);
 			while (rs.next()) {
 				User user = new User();
-				user.setId(rs.getString("id"));
+				user.setId(rs.getInt("id"));
 				user.setNama(rs.getString("name"));
 				user.setUsername(rs.getString("username"));
 				user.setPassword(rs.getString("password"));
@@ -95,7 +95,7 @@ public class UserRepo implements UserDao {
 			st.setString(1, user.getNama());
 			st.setString(2, user.getUsername());
 			st.setString(3, user.getPassword());
-			st.setString(4, user.getId());
+			st.setInt(4, user.getId());
 			st.executeUpdate();
 		} catch(SQLException e) {
 			e.printStackTrace();

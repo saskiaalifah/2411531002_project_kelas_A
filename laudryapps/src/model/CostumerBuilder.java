@@ -2,7 +2,7 @@ package model;
 
 public class CostumerBuilder {
 
-    private String id;
+    private int id;
     private String nama;
     private String email = "";   // default value
     private String alamat;
@@ -10,8 +10,8 @@ public class CostumerBuilder {
 
     public CostumerBuilder() {}
 
-    public CostumerBuilder setId(String id) {
-        this.id = id;
+    public CostumerBuilder setId(int i) {
+        this.id = i;
         return this;
     }
 

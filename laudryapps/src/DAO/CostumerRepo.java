@@ -18,110 +18,74 @@ public class CostumerRepo implements CostumerDao {
 
     private Connection connection;
 
-    final String insert = "INSERT INTO costumer (nama, alamat, nohp) VALUES (?,?,?);";
-    final String select = "SELECT * FROM costumer;";
-    final String delete = "DELETE FROM costumer WHERE id = ?;";
-    final String update = "UPDATE costumer SET nama=?, alamat=?, nohp=? WHERE id=?;";
+    private final String insert = "INSERT INTO costumer (nama, email, alamat, nohp) VALUES (?,?,?,?);";
+    private final String update = "UPDATE costumer SET nama=?, email=?, alamat=?, nohp=? WHERE id=?;";  // ← FIX
+    private final String select = "SELECT id, nama, email, alamat, nohp FROM costumer;";                  // ← FIX
+    private final String delete = "DELETE FROM costumer WHERE id = ?;";
 
     public CostumerRepo() {
         connection = Database.koneksi();
     }
 
     @Override
-    public void save(Costumer costumer) {
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(insert);
-
-            // PERBAIKAN: ganti getName() → getNama()
-            st.setString(1, costumer.getNama());
-            st.setString(2, costumer.getAlamat());
-
-            // PERBAIKAN: getNomorHp() tidak ada → ganti getNomor()
-            st.setString(3, costumer.getNomor());
-
+    public void save(Costumer cs) {
+        try (PreparedStatement st = connection.prepareStatement(insert)) {
+            st.setString(1, cs.getNama());
+            st.setString(2, cs.getEmail());
+            st.setString(3, cs.getAlamat());
+            st.setString(4, cs.getHp());   // hp di model, nohp di DB = BENAR
             st.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
+    @Override
     public List<Costumer> show() {
         List<Costumer> ls = new ArrayList<>();
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(select);
+
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(select)) {
 
             while (rs.next()) {
-
-                // PERBAIKAN: karena Costumer tidak punya setter + constructor baru,
-                // maka buat object pakai Builder.
-                Costumer costumer = new CostumerBuilder()
-                        .setId(rs.getString("id"))
+                Costumer cs = new CostumerBuilder()
+                        .setId(rs.getInt("id"))
                         .setNama(rs.getString("nama"))
+                        .setEmail(rs.getString("email"))
                         .setAlamat(rs.getString("alamat"))
-                        .setHp(rs.getString("nohp"))
+                        .setHp(rs.getString("nohp"))     // ← FIX PENTING
                         .build();
-
-                ls.add(costumer);
+                ls.add(cs);
             }
 
         } catch (SQLException e) {
             Logger.getLogger(CostumerDao.class.getName()).log(Level.SEVERE, null, e);
         }
+
         return ls;
     }
 
     @Override
-    public void update(Costumer costumer) {
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(update);
-
-            // PERBAIKAN: getName() → getNama()
-            st.setString(1, costumer.getNama());
-            st.setString(2, costumer.getAlamat());
-
-            // PERBAIKAN: getNomorHp() → getNomor()
-            st.setString(3, costumer.getNomor());
-
-            st.setString(4, costumer.getId());
+    public void update(Costumer cs) {
+        try (PreparedStatement st = connection.prepareStatement(update)) {
+            st.setString(1, cs.getNama());
+            st.setString(2, cs.getEmail());
+            st.setString(3, cs.getAlamat());
+            st.setString(4, cs.getHp());   // hp di model
+            st.setInt(5, cs.getId());
             st.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    public void delete(String id) {
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(delete);
-            st.setString(1, id);
+    @Override
+    public void delete(int id) {
+        try (PreparedStatement st = connection.prepareStatement(delete)) {
+            st.setInt(1, id);
             st.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
-
 }
