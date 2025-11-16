@@ -31,11 +31,11 @@ public class TableCostumer extends AbstractTableModel {
 		case 0:
 			return ls.get(rowIndex).getId();
 		case 1:
-			return ls.get(rowIndex).getName();
+			return ls.get(rowIndex).getNama();
 		case 2:
 			return ls.get(rowIndex).getAlamat();
 		case 3:
-			return ls.get(rowIndex).getNomorHp();
+			return ls.get(rowIndex).getNomor();
 		default:
 			return null;
 		}

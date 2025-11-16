@@ -1,37 +1,24 @@
 package model;
 
 public class Costumer {
+    
     private String id;
     private String nama;
+    private String email;
     private String alamat;
-    private String nomorHp;
+    private String hp;
 
-    // Getter & Setter
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
+    public Costumer(String id, String nama, String email, String alamat, String hp) {
         this.id = id;
-    }
-
-    public String getName() {
-        return nama;
-    }
-    public void setNama(String nama) {
         this.nama = nama;
-    }
-
-    public String getAlamat() {
-        return alamat;
-    }
-    public void setAlamat(String alamat) {
+        this.email = email;
         this.alamat = alamat;
+        this.hp = hp;
     }
 
-    public String getNomorHp() {
-        return nomorHp;
-    }
-    public void setNomorHp(String nomorHp) {
-        this.nomorHp = nomorHp;
-    }
+    public String getId() { return id; }
+    public String getNama() { return nama; }
+    public String getEmail() { return email; }
+    public String getAlamat() { return alamat; }
+    public String getNomor() { return hp; }
 }
