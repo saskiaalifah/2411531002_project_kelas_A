@@ -1,3 +1,5 @@
+package Praktikum5;
+
 public class Bus extends Kendaraan implements TransportasiUmum {
     String kelasBus;
 

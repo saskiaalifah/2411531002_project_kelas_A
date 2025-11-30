@@ -1,3 +1,5 @@
+package Praktikum5;
+
 
 // Pesawat.java
 class Pesawat extends Kendaraan implements TransportasiUdara, Maskapai {

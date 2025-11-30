@@ -1,3 +1,5 @@
+package Praktikum5;
+
 
 public class Mobil extends Kendaraan implements BahanBakar {
     public String jenisTransmisi;

@@ -1,3 +1,5 @@
+package Praktikum5;
+
 public abstract class Kendaraan {
     private String merk;
     private String model;
