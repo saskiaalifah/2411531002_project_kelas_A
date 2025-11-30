@@ -1,3 +1,4 @@
+package Praktikum4;
 
 public class User {
     private String name;

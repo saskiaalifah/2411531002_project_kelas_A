@@ -1,3 +1,4 @@
+package Praktikum4;
 
 public class Novel extends Book {
     private String genre;
